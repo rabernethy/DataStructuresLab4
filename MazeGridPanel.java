@@ -51,6 +51,7 @@ Choose the initial cell, mark it as visited and push it to the stack
 				boolean flag = true;
 				while(flag) {
 
+					// The domain of possible values for dir is [0,3].
 					// Key: 0 = N, 1 = E, 2 = S, 3 = W.
 					int dir = (int)(Math.random() * 4);
 
