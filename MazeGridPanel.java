@@ -14,19 +14,9 @@ public class MazeGridPanel extends JPanel{
 
 
 
-	// extra credit
-	public void genDFSMaze() {
-/*
-Choose the initial cell, mark it as visited and push it to the stack
-	While the stack is not empty
-		Pop a cell from the stack and make it a current cell
-		If the current cell has any neighbours which have not been visited
-			Push the current cell to the stack
-			Choose one of the unvisited neighbours
-			Remove the wall between the current cell and the chosen cell
-			Mark the chosen cell as visited and push it to the stack
+/* void genDFSMaze(), written by: Russell Abernethy */
 
-*/
+	public void genDFSMaze() {
 
 		Stack<Cell> stack  = new Stack<Cell>();
 
@@ -138,94 +128,106 @@ Choose the initial cell, mark it as visited and push it to the stack
 
 	}
 
-	//homework
+/* void solveMaze(), written by: Russell Abernethy */
 	public void solveMaze() {
-		// set up
+	
 		Stack<Cell> stack  = new Stack<Cell>();
 		Cell start = maze[0][0];
 		start.setBackground(Color.GREEN);
 		Cell finish = maze[rows-1][cols-1];
 		finish.setBackground(Color.RED);
-		// push the start position on top of the stack.
+
+		// Push start onto the stack.
 		stack.push(start);
-		// while maze exploration is not done and the stack isnt empty:
-		while(!stack.isEmpty() && stack.peek().getBackground() != Color.RED) {
-			// peek to get current position
+
+		// While the end has not been reached and the stack isn't empty:
+		while(stack.peek().getBackground() != Color.RED && !stack.isEmpty()) {
+			
+			// Look at the current position.
 			Cell currentCell = stack.peek();
-			// look North
+
+			// Try to go North if it is unvisited and there isn't a wall there:
 			if(!currentCell.northWall && !visited(currentCell.row -1, currentCell.col)) {
-				// push the northern cell onto the stack.
+
+				// Push the northern cell onto the stack.
 				stack.push(maze[currentCell.row-1][currentCell.col]);
-				// mark visited.
-				currentCell.setBackground(Color.PINK); 
+
+				// Mark currentCell as visited.
+				currentCell.setBackground(Color.GREEN); 
 			}
-			// look South
+
+			// Try to go South if it is unvisited and there isn't a wall there:
 			else if(!currentCell.southWall && !visited(currentCell.row +1, currentCell.col)) {
-				// push the southern cell onto the stack.
+
+				// Push the southern cell onto the stack.
 				stack.push(maze[currentCell.row+1][currentCell.col]);
-				// mark visited.
-				currentCell.setBackground(Color.PINK);
+
+				// Mark currentCell as visited.
+				currentCell.setBackground(Color.GREEN);
 			}
-			// look West
+
+			// Try to go West if it is unvisited and there isn't a wall there:
 			else if(!currentCell.westWall && !visited(currentCell.row, currentCell.col-1)) {
-				// push the western cell onto the stack.
+				
+				// Push the western cell onto the stack.
 				stack.push(maze[currentCell.row][currentCell.col-1]);
-				// mark vistited.
-				currentCell.setBackground(Color.PINK);
+
+				// Mark currentCell as visited.
+				currentCell.setBackground(Color.GREEN);
 			}
-			// look East
+
+			// Try to go East if it is unvisited and there isn't a wall there:
 			else if(!currentCell.eastWall && !visited(currentCell.row, currentCell.col+1)) {
-				// push the eastern cell onto the stack.
+				
+				// Push the eastern cell onto the stack.
 				stack.push(maze[currentCell.row][currentCell.col+1]);
-				// mark visited.
-				currentCell.setBackground(Color.PINK);
+				
+				// Mark currentCell as visited.
+				currentCell.setBackground(Color.GREEN);
 			}
-			// dead end!
+
+			// There are no unvisited cells adjacent to currentCell:
 			else {
-				// mark as dead end.
+
+				// Mark currentCell as a dead end.
 				currentCell.setBackground(Color.GRAY);
-				// remove the cell from the stack
+
+				// Remove currentCell from the stack.
 				stack.pop();
-			}		
+			}
+
 		}
+
 	}
-
-
-	
-
-	
 
 
 	public boolean visited(int row, int col) {
 		Cell c = maze[row][col];
 		Color status = c.getBackground();
-		if(status.equals(Color.WHITE)  || status.equals(Color.RED)  ) {
+		if(status.equals(Color.WHITE)  || status.equals(Color.RED)  )
 			return false;
-		}
-
-
-		return true;
-
-
+		else
+			return true;
 	}
 
 
 	public void genNWMaze() {
-		
 		for(int row = 0; row  < rows; row++) {
 			for(int col = 0; col < cols; col++) {
-
-				if(row == 0 && col ==0) {
+				if(row == 0 && col ==0) 
 					continue;
-				}
 
 				else if(row ==0) {
 					maze[row][col].westWall = false;
 					maze[row][col-1].eastWall = false;
-				} else if(col == 0) {
+				} 
+				
+				else if(col == 0) {
 					maze[row][col].northWall = false;
 					maze[row-1][col].southWall = false;
-				}else {
+				}
+				
+				else {
 					boolean north = Math.random()  < 0.5;
 					if(north ) {
 						maze[row][col].northWall = false;
@@ -241,6 +243,7 @@ Choose the initial cell, mark it as visited and push it to the stack
 		this.repaint();
 		
 	}
+
 
 	public MazeGridPanel(int rows, int cols) {
 		this.setPreferredSize(new Dimension(800,800));
@@ -258,13 +261,9 @@ Choose the initial cell, mark it as visited and push it to the stack
 
 		}
 
-
 		this.genDFSMaze();
 		this.solveMaze();
 		
 	}
-
-
-
 
 }
